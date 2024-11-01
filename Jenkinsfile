@@ -7,6 +7,21 @@ pipeline {
         AWS_DEFAULT_REGION = "us-east-1"
     }
     stages {
+        stage("Verify Environment") {
+            steps {
+                script {
+                    echo "AWS_ACCESS_KEY_ID is: ${AWS_ACCESS_KEY_ID}"
+                    echo "AWS_SECRET_ACCESS_KEY is: ${AWS_SECRET_ACCESS_KEY}"
+                    }
+                }
+        }
+        stage("Check AWS CLI Credentials") {
+            steps {
+                script {
+                    sh "aws sts get-caller-identity"
+                    }
+                }
+        }
         stage("Create an EKS Cluster") {
             steps {
                 script {
