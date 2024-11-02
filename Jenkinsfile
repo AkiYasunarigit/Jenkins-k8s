@@ -36,7 +36,9 @@ pipeline {
             steps {
                 script {
                     dir('kubernetes') {
-                        //sh "aws eks update-kubeconfig --name my-eks-cluster"
+                        sh "aws eks update-kubeconfig --name my-eks-cluster"
+                        sh "cat /var/lib/jenkins/.kube/config"
+                        sh "sed -i 's/apiVersion: client.authentication.k8s.io\/v1alpha1/apiVersion: client.authentication.k8s.io\/v1/g' /var/lib/jenkins/.kube/config"
                         sh "cat /var/lib/jenkins/.kube/config"
                         sh "kubectl apply -f nginx-deployment.yaml"
                         sh "kubectl apply -f nginx-service.yaml"
