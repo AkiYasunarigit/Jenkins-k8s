@@ -32,16 +32,25 @@ pipeline {
                 }
             }
         }
-        stage("Deploy to EKS") {
+        stage('Update Kubeconfig') {
             steps {
                 script {
-                    dir('kubernetes') {
-                        sh "aws eks update-kubeconfig --name my-eks-cluster"
+                    sh 'aws eks update-kubeconfig --name my-eks-cluster'
+                    sh '''
+                    # Change apiVersion to v1
+                    sed -i "s/apiVersion: client.authentication.k8s.io\\/v1alpha1/apiVersion: client.authentication.k8s.io\\/v1/" /var/lib/jenkins/.kube/config
+                    # Add interactiveMode: nonInteractive
+                    sed -i '/get-token/a \        interactiveMode: nonInteractive' /var/lib/jenkins/.kube/config
+                    '''
+                }
+            }
+        }
+        stage('Deploy to EKS') {
+            steps {
+                dir('/var/lib/jenkins/workspace/jenkins-k8s/kubernetes') {
+                    script {
                         sh "cat /var/lib/jenkins/.kube/config"
-                        sh 'sed -i "s/apiVersion: client.authentication.k8s.io\\/v1alpha1/apiVersion: client.authentication.k8s.io\\/v1/" /var/lib/jenkins/.kube/config'
-                        sh "sed -i '/get-token/a \        interactiveMode: nonInteractive' /var/lib/jenkins/.kube/config"
-                        sh "cat /var/lib/jenkins/.kube/config"
-                        sh "kubectl apply -f nginx-deployment.yaml"
+                        sh 'kubectl apply -f nginx-deployment.yaml'
                         sh "kubectl apply -f nginx-service.yaml"
                     }
                 }
