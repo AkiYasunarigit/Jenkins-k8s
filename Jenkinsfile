@@ -10,8 +10,8 @@ pipeline {
         stage("Verify Environment") {
             steps {
                 script {
-                    //echo "AWS_ACCESS_KEY_ID is: ${AWS_ACCESS_KEY_ID}"
-                    //echo "AWS_SECRET_ACCESS_KEY is: ${AWS_SECRET_ACCESS_KEY}"
+                    echo "AWS_ACCESS_KEY_ID is: ${AWS_ACCESS_KEY_ID}"
+                    echo "AWS_SECRET_ACCESS_KEY is: ${AWS_SECRET_ACCESS_KEY}"
                     }
                 }
         }
