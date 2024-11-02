@@ -10,8 +10,8 @@ pipeline {
         stage("Verify Environment") {
             steps {
                 script {
-                    echo "AWS_ACCESS_KEY_ID is: ${AWS_ACCESS_KEY_ID}"
-                    echo "AWS_SECRET_ACCESS_KEY is: ${AWS_SECRET_ACCESS_KEY}"
+                    //echo "AWS_ACCESS_KEY_ID is: ${AWS_ACCESS_KEY_ID}"
+                    //echo "AWS_SECRET_ACCESS_KEY is: ${AWS_SECRET_ACCESS_KEY}"
                     }
                 }
         }
@@ -37,6 +37,7 @@ pipeline {
                 script {
                     dir('kubernetes') {
                         sh "aws eks update-kubeconfig --name my-eks-cluster"
+                        sh "cat /var/lib/jenkins/.kube/config"
                         sh "kubectl apply -f nginx-deployment.yaml"
                         sh "kubectl apply -f nginx-service.yaml"
                     }
