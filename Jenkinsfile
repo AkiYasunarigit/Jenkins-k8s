@@ -37,10 +37,6 @@ pipeline {
                 script {
                     sh 'aws eks update-kubeconfig --name my-eks-cluster'
                     sh 'sed -i "s/apiVersion: client.authentication.k8s.io\\/v1alpha1/apiVersion: client.authentication.k8s.io\\/v1/" /var/lib/jenkins/.kube/config'
-                    sh '''
-                    # Add interactiveMode: nonInteractive after the args section
-                    sed -i '/- --cluster-name/a \        interactiveMode: nonInteractive' /var/lib/jenkins/.kube/config
-                    '''
                 }
             }
         }
