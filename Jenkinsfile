@@ -36,9 +36,9 @@ pipeline {
             steps {
                 script {
                     sh 'aws eks update-kubeconfig --name my-eks-cluster'
-                    sh '''
                     # Change apiVersion to v1
-                    sed -i "s/apiVersion: client.authentication.k8s.io\\/v1alpha1/apiVersion: client.authentication.k8s.io\\/v1/" /var/lib/jenkins/.kube/config
+                    sh 'sed -i "s/apiVersion: client.authentication.k8s.io\\/v1alpha1/apiVersion: client.authentication.k8s.io\\/v1/" /var/lib/jenkins/.kube/config'
+                    sh '''
                     # Add interactiveMode: nonInteractive
                     sed -i '/get-token/a\\      interactiveMode: nonInteractive' /var/lib/jenkins/.kube/config
                     '''
